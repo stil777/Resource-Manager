@@ -1,0 +1,45 @@
+{% extends "adding.html" %}
+  {% block title %}
+    Добавление машины
+  {% endblock %}
+  {% block form %}
+    <form name="form" method="post" id="form_id" action="{% url 'savemachine' mid=0 %}">
+      {% csrf_token %}
+      <div class="wrapper container">
+        <header></header>
+        <div class="content">
+          <p>
+            <b>Производительность машины (количество процессоров):</b>
+            <textarea name="machinecores" id="numofcores" class="textarea"></textarea>
+          </p>
+        </div>
+        <div class="input">
+          <button type="button" class="btn btn-success" onclick="run();">Сохранить</button>
+          <a href="{% url 'machine' %}" class="btn btn-info" role="button">Отменить</a>
+        </div>
+      </div>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function run(){
+        if (!$("#numofcores").val()) {
+            alert("Не все поля заполнены!")
+        }
+        else if (!/^\d+$/.test($("#numofcores").val())) {
+          alert("Неверный формат данных (производительность)!")
+        }
+        else{
+          $("#form_id").submit();
+        }
+    }
+    </script>
+  {% endblock %}
+
+  <!--$('#save').click(function(){
+        if (!$("#numofcores").val()) {
+            alert("Не все поля заполнены!")
+        }
+        else{
+          $(this).submit();
+        }
+    });-->

@@ -1,0 +1,33 @@
+{% extends "adding.html" %}
+  {% block title %}
+    Добавление задачи
+  {% endblock %}
+  {% block form %}
+    <form name="form" method="post" id="form_id" action="{% url 'savetask' tid=0 %}">
+      {% csrf_token %}
+      <div class="wrapper container">
+        <header></header>
+        <div class="content">
+          <p>
+            <b>Описание задачи:</b>
+            <textarea name="task" id="tasktitle" class="textarea"></textarea>
+          </p>
+        </div>
+        <div class="input">
+          <button type="button" class="btn btn-success" onclick="run();">Сохранить</button>
+          <a href="{% url 'task' %}" class="btn btn-info" role="button">Отменить</a>
+        </div>
+      </div>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function run(){
+        if (!$("#tasktitle").val()) {
+            alert("Не все поля заполнены!")
+        }
+        else{
+          $("#form_id").submit();
+        }
+    }
+    </script>
+  {% endblock %}

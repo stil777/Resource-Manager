@@ -1,0 +1,24 @@
+{% extends "adding.html" %}
+  {% block title %}
+    Результат прогнозирования
+  {% endblock %}
+  {% block form %}
+  	<div class="wrapper container">
+        <header></header>
+        <div class="content">
+          <p>
+          	{% if message %}
+          		{{ message }}
+          		<b>
+          			{% if resultTime > 0 %}
+          				T = {{ resultTime }}
+          			{% endif %}
+          		</b>
+          	{% endif %}
+          </p>
+        </div>
+        <div class="input">
+          <a href="{% url 'forecasting' %}" class="btn btn-info" role="button">OK</a>
+        </div>
+    </div>
+  {% endblock %}

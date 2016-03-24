@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+    <script language="JavaScript" type="text/javascript">
+      function highlight(){
+        var tags=document.getElementsByTagName("li");
+        for(i in tags){
+          if(tags[i].className=="mainmenu"){
+            if(document.location.href==tags[i].firstChild.href){
+                tags[i].className += " active";
+             }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body onload="highlight()">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="mainmenu"><a href="{% url 'index' %}">Главная</a></li>
+      <li class="mainmenu"><a href="{% url 'task' %}">Tasks</a></li>
+      <li class="mainmenu"><a href="{% url 'machine' %}">Machines</a></li>
+      <li class="mainmenu"><a href="{% url 'option' %}">Options</a></li>
+      <li class="mainmenu"><a href="{% url 'launch' %}">Launches</a></li>
+      <li class="mainmenu"><a href="{% url 'lauopt' %}">Launch Options</a></li>
+      <li class="mainmenu"><a href="{% url 'forecasting' %}">Forecasting Function</a></li>
+    </ul>
+    <div class="wrapper container">
+      <header></header>
+      <div class="content">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <footer></footer>
+    
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
+</html>

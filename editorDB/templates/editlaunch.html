@@ -1,0 +1,73 @@
+{% extends "adding.html" %}
+  {% block title %}
+    Добавление запуска
+  {% endblock %}
+  {% block form %}
+    <form name="form" method="post" id="form_id" action="{% url 'savelaunch' lid=lau.id %}">
+      {% csrf_token %}
+      <div class="wrapper container">
+        <header></header>
+        <div class="content">
+          <p>
+            <b>Время выполнения задачи (сек):</b>
+            <textarea name="runtime" id="rtime" class="textarea">{{ lau.RunTime }}</textarea>
+          </p>
+          <p>
+            <b>Объем выходных данных:</b>
+            <textarea name="datasize" id="dsize" class="textarea">{{ lau.DataSize }}</textarea>
+          </p>
+          <p>
+            <b>Дата запуска:</b>
+            <input type="date" name="laudate" id="ldate" value="{{ lau.Date }}"/>
+          </p>
+          <div class="form-group">
+            <label>Наименование задачи:</label>
+            <select name="taskid" class="form-control" id="sel1">
+              <option value="{{ lau.Task.id }}">{{ lau.Task.Title }}</option>
+              <!--{% if tasks %}
+                {% for task in tasks %}
+                  <option value="" data-url="{% url 'showoptions' tid=task.id %}">{{ forloop.counter }}. {{ task.Title }}</option>
+                {% endfor %}
+              {% endif %}-->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Номер машины:</label>
+            <select name="machid" class="form-control" id="sel2">
+              <option value="{{ lau.Machine.id }}">{{ lau.Machine.id }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            {% for lopt in loptions %}
+              <div class="option" id="{{ lopt.Option.id }}">
+                <label>Значение параметра "{{ lopt.Option.Title }}":</label>
+                <textarea name="opt{{ lopt.Option.id }}" id="opt{{ lopt.Option.id }}" class="textarea">{{ lopt.Value }}</textarea>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="input">
+          <button type="button" class="btn btn-success" onclick="run();">Сохранить</button>
+          <a href="{% url 'launch' %}" class="btn btn-info" role="button">Отменить</a>
+        </div>
+      </div>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    
+    function run(){
+      if (!$("#rtime").val() || !$("#dsize").val() || !$("#ldate").val() || $("#sel1").val() == 0 || $("#sel2").val() == 0) {
+          alert("Не все поля заполнены!")
+      }
+      else if (!/^\d+$/.test($("#rtime").val()) || !/^\d+$/.test($("#dsize").val())) {
+        alert("Неверный формат данных (время выполнения или объем данных)!")
+      }
+      else{
+        $('.option:visible').each(function(){
+          $("#form_id").append('<input type="hidden" id="oid'+ $(this).attr('id') + '" name="oid'+ $(this).attr('id') + '" value="'+ $(this).attr('id') +'"/>');
+        });
+        $("#form_id").submit();
+      }
+    }
+    </script>
+  {% endblock %}

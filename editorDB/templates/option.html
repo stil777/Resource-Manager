@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+  {% block title %}
+    Таблица Option
+  {% endblock %}
+  {% block content %}
+    <form name="form" method="post" id="form_id" action="">
+      {% csrf_token %}
+      <p>
+        <a href="{% url 'addoption' %}" class="btn btn-success" role="button">Добавить</a>
+        <button type="button" class="btn btn-info" onclick="checkedit();">Редактировать</button>
+        <button type="button" class="btn btn-danger" onclick="checkdel();">Удалить</button>
+      </p>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th> </th>
+            <th>Номер параметра (ID)</th>
+            <th>Название параметра (Title)</th>
+            <th>Наименование задачи (Task)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if options %}
+            {% for opt in options %}
+              <tr>
+                <td><input type="checkbox" id="check{{ forloop.counter }}" name="check" value="{{ opt.id }}"></td>
+                <td>{{ opt.id }}</td>
+                <td>{{ opt.Title }}</td>
+                <td>
+                  {% for task in tasks %}
+                    {% if task.id == opt.Task_id %}
+                      {{ task.Title }}
+                    {% endif %}
+                    {% if not forloop.last %} {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function checkdel(){
+        var flag = false;
+        for (var i = 1; i <= {{ options|length }}; i++) {
+          if(document.getElementById("check" + i).checked){
+            flag = true;
+            break;
+          }
+        }
+        if (flag == false){
+            alert("Не выбраны кортежи для удаления!")
+        }
+        else{
+          $("#form_id").attr('action', "{% url 'deleteoption' %}");
+          $("#form_id").submit();
+        }
+    }
+    function checkedit(){
+        var flag = false;
+        var counter = 0;
+        for (var i = 1; i <= {{ options|length }}; i++) {
+          if(document.getElementById("check" + i).checked){
+            flag = true;
+            counter++;
+          }
+        }
+        if (flag == false){
+          alert("Не выбраны кортежи для редактирования!")
+        }
+        else if (counter > 1){
+          alert("Выбрано более одного кортежа. Для редактирования допустимо выделение только одного кортежа.");
+        }
+        else{
+          $("#form_id").attr('action', "{% url 'editoption' %}");
+          $("#form_id").submit();
+        }
+    }
+    </script>
+  {% endblock %}

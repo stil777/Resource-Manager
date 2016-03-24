@@ -1,0 +1,48 @@
+{% extends "adding.html" %}
+  {% block title %}
+    Добавление запуска
+  {% endblock %}
+  {% block form %}
+    <form name="form" method="post" id="form_id" action="{% url 'savelauopt' loid=laop.id %}">
+      {% csrf_token %}
+      <div class="wrapper container">
+        <header></header>
+        <div class="content">
+          <p>
+            <b>Значение параметра запуска:</b>
+            <textarea name="opvalue" id="opval" class="textarea">{{ laop.Value }}</textarea>
+          </p>
+          <div class="form-group">
+            <label>Наименование параметра:</label>
+            <select name="optid" class="form-control" id="sel2">
+              <option value="{{ laop.Option.id }}">{{ laop.Option.Title }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Номер запуска:</label>
+            <select name="lauid" class="form-control" id="sel1">
+              <option value="laop.Launch.id">{{ laop.Launch.id }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input">
+          <button type="button" class="btn btn-success" onclick="run();">Сохранить</button>
+          <a href="{% url 'lauopt' %}" class="btn btn-info" role="button">Отменить</a>
+        </div>
+      </div>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function run(){
+        if (!$("#opval").val() || $("#sel1").val() == 0 || $("#sel2").val() == 0) {
+            alert("Не все поля заполнены!")
+        }
+        else if (!/^\d+$/.test($("#opval").val())) {
+          alert("Неверный формат данных (значение параметра)!")
+        }
+        else{
+          $("#form_id").submit();
+        }
+    }
+    </script>
+  {% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+  {% block title %}
+    Таблица Launch Option
+  {% endblock %}
+  {% block content %}
+    <form name="form" method="post" id="form_id" action="" >
+      {% csrf_token %}
+      <p>
+        <button type="button" class="btn btn-success" onclick="checkadd();">Добавить</button>
+        <button type="button" class="btn btn-info" onclick="checkedit();">Редактировать</button>
+        <button type="button" class="btn btn-danger" onclick="checkdel();">Удалить</button>
+      </p>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th> </th>
+            <th>Номер параметра запуска (ID)</th>
+            <th>Значение параметра (Value)</th>
+            <th>Номер запуска (Launch_id)</th>
+            <th>Наименование параметра (Option_title)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if lauopts %}
+            {% for lop in lauopts %}
+              <tr>
+                <td><input type="checkbox" id="check{{ forloop.counter }}" name="check" value="{{ lop.id }}"></td>
+                <td>{{ lop.id }}</td>
+                <td>{{ lop.Value }}</td>
+                <td>{{ lop.Launch_id }}</td>
+                <td>
+                  {% for opt in options %}
+                    {% if opt.id == lop.Option_id %}
+                      {{ opt.Title }}
+                    {% endif %}
+                    {% if not forloop.last %} {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function checkdel(){
+        alert("Функция удаления недоступна для данного вида таблиц. Воспользуйтесь функцией редактирования.");
+    }
+    function checkadd(){
+        alert("Функция добавления недоступна для данного вида таблиц. Воспользуйтесь функцией редактирования.");
+    }
+    function checkedit(){
+        var flag = false;
+        var counter = 0;
+        for (var i = 1; i <= {{ lauopts|length }}; i++) {
+          if(document.getElementById("check" + i).checked){
+            flag = true;
+            counter++;
+          }
+        }
+        if (flag == false){
+          alert("Не выбраны кортежи для редактирования!")
+        }
+        else if (counter > 1){
+          alert("Выбрано более одного кортежа. Для редактирования допустимо выделение только одного кортежа.");
+        }
+        else{
+          $("#form_id").attr('action', "{% url 'editlauopt' %}");
+          $("#form_id").submit();
+        }
+    }
+    </script>
+  {% endblock %}

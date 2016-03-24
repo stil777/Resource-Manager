@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+  {% block title %}
+    Функция прогнозирования времени работы приложения
+  {% endblock %}
+  {% block content %}
+  	Для расчета времени работы приложения выберите <b>задачу</b>, для которой оно должно быть вычислено, затем введите <b>число ядер машины</b>, на которой будет выполняться задача, а также введите <b>параметры запуска</b>.
+  	<form name="form" method="post" id="form_id" action="{% url 'funcresult' %}">
+      {% csrf_token %}
+      <div class="wrapper container">
+        <header></header>
+        <div class="content">
+	    	  <div class="form-group">
+	          <label>Прогнозирование для задачи:</label>
+	          <select name="taskid" class="form-control" id="sel1">
+	            <option value="0">---Выберите задачу---</option>
+	            {% if tasks %}
+	              {% for task in tasks %}
+	                <option value="{{ task.id }}" data-url="{% url 'showoptions' tid=task.id %}">{{ forloop.counter }}. {{ task.Title }}</option>
+	              {% endfor %}
+	            {% endif %}
+	          </select>
+	        </div>
+          <p>
+            <b>Количество ядер:</b>
+            <textarea name="cores" id="mcores" class="textarea"></textarea>
+          </p>
+          <div class="form-group">
+            {% for opt in options %}
+              <div class="option hidden" id="{{ opt.id }}">
+                <label>Значение параметра "{{ opt.Title }}":</label>
+                <textarea name="opt{{ opt.id }}" id="opt{{ opt.id }}" class="textarea"></textarea>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="input">
+          <button type="button" class="btn btn-success" onclick="count();">Рассчитать</button>
+        </div>
+      </div>
+    </form>
+    <script src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    function count(){
+        if ($("#sel1").val() == 0 || !$("#mcores").val()) {
+            alert("Не все поля заполнены!")
+        }
+        else if (!/^\d+$/.test($("#mcores").val())) {
+        	alert("Неверный формат данных (количество ядер)!")
+        }
+        else{
+          $('.option:visible').each(function(){
+            $("#form_id").append('<input type="hidden" id="oid'+ $(this).attr('id') + '" name="oid'+ $(this).attr('id') + '" value="'+ $(this).attr('id') +'"/>');
+          });
+          $("#form_id").submit();
+        }
+    }
+    function showOptions(){
+        $('.option').each(function(){
+          $(this).addClass("hidden");
+        });
+        $('#sel1').val();
+        var url = $('#sel1 option:selected').data("url");
+        $.ajax({
+        type: 'POST',
+        url: url,
+        data: { csrfmiddlewaretoken: "{{ csrf_token }}",
+        state:"inactive"
+        },
+        }).done(function(opts){
+          //console.log(opts);
+          oids = JSON.parse(opts);
+          $('.option').each(function(){
+            var ident = oids[$(this).attr('id')];
+            if (ident) $(this).removeClass("hidden");
+        });
+        });
+    }
+    $('#sel1').change(function(){
+      showOptions();
+    });
+    </script> 
+  {% endblock %}
+  <!--/[a-zA-Z]+-*\\\/\[\]\{\}!&?$/.test($("#mcores").val())-->
