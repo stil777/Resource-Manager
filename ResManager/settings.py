@@ -103,10 +103,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATICFILES_DIRS = (
-    #'C:/Resource-Manager/editorDB/static',
-    os.path.join(BASE_DIR, "/Resource-Manager/editorDB/static"),
-)
+
 STATIC_URL = os.path.join(BASE_DIR, '/static/')
 STATIC_ROOT = os.path.join(BASE_DIR, '/Resource-Manager/editorDB/static')
+STATICFILES_DIRS = (
+    #'C:/Resource-Manager/editorDB/static',
+    #os.path.join(BASE_DIR, "/Resource-Manager/editorDB/static"),
+    STATIC_ROOT,
+)
 #STATIC_URL = '/static/'
