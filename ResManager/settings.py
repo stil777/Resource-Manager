@@ -41,7 +41,7 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_DIRS = (
-    'C:/Resource Manager/resource-manager/ResManager/editorDB/templates',
+    'C:/Resource-Manager/editorDB/templates',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,7 +104,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATICFILES_DIRS = (
-    'C:/Resource Manager/resource-manager/ResManager/editorDB/static',
+    'C:/Resource-Manager/editorDB/static',
 )
 STATIC_URL = os.path.join(BASE_DIR, '/static/')
 #STATIC_URL = '/static/'
