@@ -41,7 +41,7 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_DIRS = (
-    'C:/Resource-Manager/editorDB/templates',
+    os.path.join(BASE_DIR, 'editorDB', 'templates'), #'C:/Resource-Manager/editorDB/templates',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
             ],
         },
     },
@@ -105,7 +106,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/' #os.path.join(BASE_DIR, '/static/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'editorDB', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #STATICFILES_DIRS = (
     #'C:/Resource-Manager/editorDB/static',
     #os.path.join(BASE_DIR, "/Resource-Manager/editorDB/static"),
