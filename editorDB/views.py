@@ -9,7 +9,7 @@ import datetime, json
 from django.conf import settings
 
 def index(request):
-	print "this = " + settings.BASE_DIR
+	print "this = " + settings.STATIC_ROOT
 	return render(request, 'index.html')
 
 def task(request):
