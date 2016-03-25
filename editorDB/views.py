@@ -6,8 +6,10 @@ import math
 from .models import Task, Machine, Option, Launch, LaunchOption
 from django.template.context_processors import csrf
 import datetime, json
+from django.conf import settings
 
 def index(request):
+	print "this = " + settings.BASE_DIR
 	return render(request, 'index.html')
 
 def task(request):
